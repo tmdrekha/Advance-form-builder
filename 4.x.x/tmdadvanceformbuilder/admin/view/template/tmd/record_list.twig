@@ -1,0 +1,63 @@
+<form id="form-record" method="post" data-oc-toggle="ajax" data-oc-load="{{ action }}" data-oc-target="#record">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+              <tr>
+                <td class="text-start">{{ column_productname }}</td>
+                
+                <td class="text-start">{% if sort == 'title' %}
+                  <a href="{{ sort_title }}" class="{{ order|lower }}">{{ column_title }}</a>
+                  {% else %}
+                  <a href="{{ sort_title }}">{{ column_title }}</a>
+                  {% endif %}
+                </td>
+                
+                <td class="text-start">{% if sort == 'name' %}
+                  <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                  {% else %}
+                  <a href="{{ sort_name }}">{{ column_name }}</a>
+                  {% endif %}
+                </td>
+                
+                <td class="text-start">{{ column_ip }}</td>
+                
+                <td class="text-start">{% if sort == 'date' %}
+                  <a href="{{ sort_date }}" class="{{ order|lower }}">{{ column_date }}</a>
+                  {% else %}
+                  <a href="{{ sort_date }}">{{ column_date }}</a>
+                  {% endif %}
+                </td>           
+                <td class="text-start">{{ column_action }}</td>
+                            
+              </tr>
+            </thead>
+            <tbody>
+              {% if records %}
+               {% for report in records %}
+              <tr>
+
+                <td class="text-start">{{ report.productname }}</td>
+                <td class="text-start">{{ report.title }}</td>
+                <td class="text-start">{% if report.customer_name ==' ' %}Guest{% else %}{{report.customer_name}}{% endif %}</td>
+                
+                <td class="text-start">{{ report.ip }}</td>
+                <td class="text-start">{{ report.date_added }}</td>
+                <td class="text-start">
+                <a href="{{ report.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                </td>
+                
+            </tr>
+                {% endfor %} 
+                {% else %}
+              <tr>
+                <td class="text-center" colspan="7">{{ text_no_results }}</td>
+              </tr>
+              {% endif %}
+          </tbody>
+        </table>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 text-start">{{ pagination }}</div>
+    <div class="col-sm-6 text-end">{{ results }}</div>
+  </div>
+</form>

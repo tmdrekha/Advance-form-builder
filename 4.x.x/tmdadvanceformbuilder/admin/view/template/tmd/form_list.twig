@@ -1,0 +1,94 @@
+<form id="form-form" method="post" data-oc-toggle="ajax" data-oc-load="{{ action }}" data-oc-target="#form">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-center" style="width: 1px;"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', $(this).prop('checked'));" class="form-check-input"/></td>
+          <td class="text-start"><a href="{{ sort_title }}"{% if sort == 'title' %} class="{{ order|lower }}"{% endif %}>{{ column_title }}</a>
+          </td>
+          <td class="text-start"><a href="{{ sort_preview }}"{% if sort == 'preview' %} class="{{ order|lower }}"{% endif %}>{{ column_preview }}</a>
+         
+          <td class="text-start"><a href="{{ sort_status }}"{% if sort == 'status' %} class="{{ order|lower }}"{% endif %}>{{ column_status }}</a>
+          </td>
+          <td class="text-start">{{ column_action }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% if forms %}
+          {% for form in forms %}
+            <tr>
+              <td class="text-center"><input type="checkbox" name="selected[]" value="{{ form.form_id }}" class="form-check-input"/></td>
+              <td class="text-start">{{ form.title }}</td>
+              <td class="text-start"><a target="_blank" href="{{ form.preview }}">{{ form.preview }}</a></td>
+              <td class="text-start">{{ form.status }}</td>
+              <td class="text-start">
+			  <span class="d-flex gap-1">
+                <a data-bs-toggle="modal" rel1="{{ form.title }}" rel2="{{ form.form_id }}" data-bs-target="#help-modal2" class="btn btn-warning tmdhelptopic"><i class="fa fa-code"></i></a>
+				<a href="{{ form.edit }}" data-bs-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+				<a href="{{ form.view }}" data-bs-toggle="tooltip" title="{{ button_view }}" class="btn btn-warning"><i class="fa fa-eye"></i></a>
+				<a href="{{ form.export }}" data-bs-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Export"><i class="fa fa-download"></i></a>
+			  </span>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td class="text-center" colspan="4">{{ text_no_results }}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 text-start">{{ pagination }}</div>
+    <div class="col-sm-6 text-end">{{ results }}</div>
+  </div>
+</form>
+
+<!--/// new code 27 march 2020 // -->
+<div class="modal modal-wide fade" id="help-modal2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog"></div>
+</div>  
+ <script type="text/javascript">
+  $(document).on('click','.tmdhelptopic',function(e) {
+    // alert();
+    html='';
+    html+='<div class="modal-dialog">';
+    html+=' <div class="modal-content">';
+    html+='   <div class="modal-header">';
+    html+='     <h4 class="modal-title">{{ text_copy }}</h4>';
+    html+='     <button type="button" class="close" data-bs-dismiss="modal">&times;</button>';
+    html+='   </div>';
+    html+='   <div class="modal-body"><button onclick="tmdCopy()" class="btn btn-primary copy" style="float:right;"><i class="fa fa-copy"></i> Copy</button>';
+    html+='     <p><textarea class="form-control" id="copy"><a data-bs-toggle="modal" onclick="return tmdFormPopup('+$(this).attr('rel2')+')" data-bs-target="#help-modal2" class="btn btn-primary btn-sm btn-block text-center">'+$(this).attr('rel1')+'</a></textarea>';
+    html+='   </div>';
+    html+='   <div class="modal-footer">';
+    html+='     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>';
+    html+='   </div>';
+    html+=' </div>';
+    html+='</div>'
+  $('#help-modal2').html('');
+  $('#help-modal2').append(html);
+});
+
+function tmdCopy() {
+  var copyText = document.getElementById("copy");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+}
+ </script>
+<style type="text/css">
+  .modal.modal-wide .modal-dialog {
+    width: 70%;
+    
+  }
+  .modal-content {
+    width: 150%;
+    margin-left: -89px;
+  }
+  .copy {
+    margin-bottom:2px;
+  }
+</style>
+<!--/// new code 27 march 2020 // -->

@@ -1,0 +1,231 @@
+.topdescrption{
+	font-size:14px;
+	margin-bottom:10px;
+	font-weight: 400;
+    line-height: 24px;
+}
+.padd0{
+	padding: 0px;
+}
+.formbulider .form-horizontal .control-label{
+    text-align: left;
+}
+.bottomdescrption{
+	clear:both;
+	border-top:1px solid #ccc;
+	padding:10px;
+}
+.bottomdescrption p{
+	font-size:14px;
+	font-weight: 400;
+    line-height: 24px;
+	margin:0px;
+}
+#formbuilder .btn-primary{
+	margin-bottom:0px;
+}
+#formbuilder label{
+	text-align:left;
+    color: #000;
+}
+.modal-header h4{
+	text-align:center;
+	font-size: 18px;
+    font-weight: 700;
+}
+.topdescrption p,.bottomdescrption p{
+	text-align:center;
+}
+#help-modal .modal-header .btn-default, 
+.oc30 #help-modal .modal-header .btn-default{
+	position: absolute;
+    top: -12px;
+    background: #000;
+    border-radius: 50% !important;
+    color: #fff;
+    border: none;
+	padding: 10px;
+}
+.modal-body .image{
+	text-align:center;
+}
+.modal-body .image img{
+	margin:0 auto;
+}
+.formbulider{
+	border:1px solid #ccc;
+	border-radius:4px;
+}
+.formbulider h2{
+	background:#eee;
+	color:#444;
+	margin:0 0 10px;
+	font-size:18px;
+	padding:15px;
+	font-weight:600;
+}
+.formbulider form{
+	padding:0 15px;
+}
+#formbuilder .text-danger {
+	color:#ff0000; 
+	font-size:13px;
+}
+.oc2 #formbuilder .text-danger {
+	color:#fff;
+}
+.loader{
+    position: absolute;
+    bottom:100px;
+    left: auto;
+    z-index: 11;
+    opacity: 0.5;
+}
+#column-left .loader,
+#column-right .loader{
+	left: 70px;
+}
+#column-left #formbuilder .buttons .btn-block + .btn-block,
+#column-right #formbuilder .buttons .btn-block + .btn-block {
+	margin: 10px 0 0;
+}
+.oc2 .formbulider .form-horizontal .form-group label,
+.oc2 .formbulider .form-horizontal .form-group label + div{
+    width: 100%;
+}
+.oc2 #help-modal .form-horizontal .form-group label + div{
+    width: 66%;
+    float: left;
+}
+.product-info .right .wishlist-compare{
+	clear: both;
+}
+.hide{
+	display: none;
+}
+#help-modal .warning{
+	width: 93%;
+	margin-bottom: 10px;
+}
+#formbuilder .buttons{
+	display: block;
+	width:100%; 
+	text-align: left;
+}
+.oc2 #help-modal .buttons{
+	display: block;
+	width:92%;
+}
+#formbuilder .buttons .btn-block + .btn-block {
+	margin-top: 0px;
+	margin-left: 10px;
+}
+.tmdhelptopic{
+	margin-bottom: 10px;
+}
+#column-left .formbulider .captcha label,
+#column-right .formbulider .captcha label{
+	display: block; 
+	width:100%;
+}
+#column-left .formbulider .captcha .form-group .col-sm-10 ,
+#column-right .formbulider .captcha .form-group .col-sm-10 {
+	width:100%;
+}
+#column-left .formbulider .captcha #input-captcha+img,
+#column-right .formbulider .captcha #input-captcha+img {
+    margin: 10px auto;
+    text-align: center;
+    display: block;
+}
+#column-left .formbulider .captcha .g-recaptcha,
+#column-right .formbulider .captcha .g-recaptcha{
+	transform: scale(0.75);
+	margin-left: -30px;
+}
+.extended-container #column-left.side-column .formbulider .captcha .g-recaptcha ,
+.extended-container #column-right.side-column .formbulider .captcha .g-recaptcha {
+    transform: scale(0.65);
+    margin-left: -53px;
+}
+#column-left.side-column .formbulider .captcha .g-recaptcha,
+#column-right.side-column .formbulider .captcha .g-recaptcha {
+    transform: scale(0.65);
+    margin-left: 0px;
+}
+#formbuilder .form-group .col-sm-2,
+#formbuilder .form-group .col-sm-3,
+#formbuilder .form-group .col-sm-8,
+#formbuilder .form-group .col-sm-9,
+#formbuilder .form-group .col-sm-10 {
+	width: 100%;
+}
+#formbuilder .form-group #input-captcha + img{
+	margin:10px 0 0;
+}
+#formbuilder .buttons .btn+.btn{
+	margin-left: 8px;
+}
+
+.modal-body #formbuilder .buttons, .oc30 .modal-body #formbuilder .buttons {
+	text-align: center;
+}
+.oc30 #formbuilder #input-captcha + img {
+    margin: 0;
+}
+.oc30 #formbuilder  {
+	margin: 30px 0;
+}
+.oc30 #formbuilder .form-group {
+    display: block;
+}
+.oc30 #formbuilder .form-group .control-label{
+    max-width: 100%;
+	display: block;
+}
+.oc30 #formbuilder .form-group .form-control {
+	max-width: 100%;
+}
+.oc30 .modal-body .image {
+	margin: 0 0 20px;
+}
+.oc30 .modal-body .image img {
+	border: 1px solid #ddd;
+}
+.oc30 #formbuilder .row {
+	margin-left: -12px;
+    margin-right: -12px;
+}
+.oc30 #formbuilder .row > div {
+	padding-left: 12px;
+    padding-right: 12px;
+}
+.oc30 #formbuilder .buttons > div .btn {
+    display: block;
+    white-space: normal;
+}
+#product-product .product-details .linkbox {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 15px;
+}
+.oc30 #product-product .product-details .linkbox .btn {
+    margin:0;
+	white-space: normal;
+}
+
+@media(max-width: 767px){
+	.oc30 #formbuilder .row {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	.oc30 #formbuilder .row > div {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	
+	.oc30 #formbuilder .row >div+div{
+		margin-top: 8px;
+	}
+}

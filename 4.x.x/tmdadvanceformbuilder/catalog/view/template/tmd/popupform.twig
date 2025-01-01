@@ -1,0 +1,883 @@
+<link href="catalog/view/theme/default/stylesheet/popup_stylesheet.css" rel="stylesheet" media="screen" />
+
+<div class="modal-dialog modal-md">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title text-center">{{ productname }}</h4>
+			{% if b_price %}
+			<h4 class="modal-title pull-left" style="display: {% if base_price == 0 %} none {% endif %};" id="base_prices" rel="{{ base_price }}">{{ b_price }}</h4><br/>
+		 	{% endif %}
+		 	<div class="pull-right">
+				<button type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-close"><i class="fa fa-times" aria-hidden="true"></i></button>
+			</div>
+		</div>
+		<div class="modal-body"> 
+		<!-- product name and image code -->
+		<div class="loadsuccessmessage"></div>
+		<!-- product name and image code -->
+		
+		<div class="image">
+			{% if thumb %}
+			<img src="{{ thumb }}" class="img-thumbnail" alt="image" title="image"/>
+			{% endif %}
+		</div>
+		
+		{% if top_description %}
+		<div class="topdescrption">{{ top_description }}</div>
+		{% endif %}
+	 
+		<form class="form-horizontal" id="form-horizontal">
+		<div id="formbuilder">
+			<input type="hidden" name="price" value="{{ base_price }}" id="price" />
+			<input type="hidden" name="product_id" value="{{ product_id }}" />
+			<input type="hidden" name="title" value="{{ formtitle }}"/>
+			<input type="hidden" name="form_id" value="{{ form_id }}"/>
+				
+				{% if form_fields %}
+				 {% for optionfield in form_fields %}
+					{% if optionfield.type == 'select' %}
+					<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					  <label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					  </label>
+						<div class="col-sm-12">	
+							<div class="input-formfieldss{{ optionfield.field_id }}">
+								<select name="formfields[{{ optionfield.field_id }}]"  class="form-select input-formfieldss{{ optionfield.field_id }}">
+									<option value="">{{ text_select }}</option>
+									{% for option_value in optionfield.form_field_option %}
+										{% if formfields.optionfield.field_id==option_value.name %}		
+										<!-- new code 27 march 2020 -->				
+										<option value="{{ option_value.name }}" selected="selected" rel="{{ option_value.price }}">{{ option_value.name }}
+									{% if option_value.price != 0 %}
+									<b> ({{ option_value.tmdprice }})</b>
+				                    {% endif %}</option>
+										{% else %}
+										<option value="{{ option_value.name }}" rel="{{ option_value.price }}">{{ option_value.name }}
+									{% if option_value.price != 0 %}
+									<b> ({{ option_value.tmdprice }})</b>
+				                    {% endif %}</option>
+										{% endif %} 
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if optionfield.type == 'radio' %}
+					<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+						<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					  </label>
+					  <div class="col-sm-12">
+						<div class="input-formfieldss{{ optionfield.field_id }}">
+							{% for option_value in optionfield.form_field_option %}
+							<div class="radio">
+								<label>
+									<input type="radio" name="formfields[{{ optionfield.field_id }}]" rel="{{ option_value.price }}" value="{{ option_value.name }}" />
+									{% if option_value.image %}
+					                   <img src="{{ option_value.image }}" class="img-thumbnail" /> 
+					                {% endif %}   							                    
+									{{ option_value.name }}
+									{% if option_value.price != 0 %}
+									<b> ({{ option_value.tmdprice }})</b>
+				                    {% endif %}
+								</label>
+							</div>
+							{% endfor %}
+							<span class="" id="input-formfieldss{{ optionfield.field_id }}"></span>
+						</div>			
+					  </div>
+					</div>
+					{% endif %}
+					{% if optionfield.type == 'checkbox' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+				  <div class="col-sm-12">
+				  <div class="input-formfieldss{{ optionfield.field_id }}">
+					{% for option_value in optionfield.form_field_option %}
+					<div class="checkbox">
+					  <label>
+					  	<!-- new code 27 march 2020 -->
+						<input type="checkbox" name="formfields[{{ optionfield.field_id }}][]" rel="{{ option_value.price }}" value="{{ option_value.name }} " />
+							{% if option_value.image %}
+				              <img src="{{ option_value.image }}" class="img-thumbnail" /> 
+			            	{% endif %}   
+							{{ option_value.name }} 
+								{% if option_value.price != 0 %}
+								<b> ({{ option_value.tmdprice }})</b>
+				      		{% endif %}
+						<!-- new code 27 march 2020 -->
+					  </label>
+					</div>
+					{% endfor %}
+					<span class="" id="input-formfieldss{{ optionfield.field_id }}"></span>
+				  </div>
+				  </div>
+				</div>
+				{% endif %}
+				{% if optionfield.type == 'text' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />					
+					</div>
+				</div>
+				{% endif %}
+				{% if optionfield.type == 'textarea' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+				  <label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+				  <div class="col-sm-12">
+				  <textarea name="formfields[{{ optionfield.field_id }}]" rows="5" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}"></textarea>
+				  </div>
+				</div>
+				{% endif %}
+					
+				{% if optionfield.type == 'number' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />
+					</div>
+				</div>	
+				{% endif %}
+					
+				{% if optionfield.type == 'telephone' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />
+					</div>
+				</div>	
+				{% endif %}	
+					
+				{% if optionfield.type == 'email' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />
+						
+					</div>
+				</div>	
+				{% endif %}	
+				{% if optionfield.type == 'emaile_exists' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />
+					</div>
+				</div>		
+				{% endif %}	
+				{% if optionfield.type == 'password' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="password" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />
+					</div>
+				</div>		
+				{% endif %}	
+				{% if optionfield.type == 'confirm' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="password" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control input-formfieldss{{ optionfield.field_id }}" />
+					</div>
+				</div>	
+				{% endif %}	
+				{% if optionfield.type == 'file' %}
+				
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+				  <label class="col-sm-3 control-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+				  <div class="col-sm-12">
+				  <button type="button" id="button-upload{{ optionfield.field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light btn-block"><i class="fa fa-upload"></i> {{ button_upload }} </button>
+				  <input type="hidden" name="formfields[{{ optionfield.field_id }}]" value="" id="input-formfieldss{{ optionfield.field_id }}" />
+				   
+				   <div style="display: none;" id="alert" class="col-sm-9 msg_pop_up"></div>
+
+				  </div>
+				</div>
+				{% endif %}
+
+				{% if optionfield.type == 'date' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+				    <label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+				  <div class="col-sm-12">
+				    <div class="input-group tmddatemain">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="{{ optionfield.value_date }}" data-date-format="YYYY-MM-DD" id="input-formfieldss{{ optionfield.field_id }}" class="form-control tmddate" />
+					 	<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+					</div>
+					<div id="CalModal"></div>
+					</div>
+				</div>
+				{% endif %}
+				{% if optionfield.type == 'datetime' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+				   <div class="col-sm-12">
+					  	<div class="input-group tmddatetimemain">
+							<input type="text" name="formfields[{{ optionfield.field_id }}]" value="{{ optionfield.value }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control tmddatetime" />
+							<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+						</div>
+						<div id="CalModal1"></div>
+					</div>
+				</div>
+				{% endif %}
+				{% if optionfield.type == 'time' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+				    <label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<div class="input-group tmdtimemain">
+							<input type="text" name="formfields[{{ optionfield.field_id }}]" value="{{ optionfield.value_time }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control tmdtime" />
+						 <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+					   </div>
+					   <div id="CalModal2"></div>
+					</div>
+				</div>
+
+				{% endif %}
+				{% if optionfield.type == 'country' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">	
+						<select name="formfields[{{ optionfield.field_id }}]" id="input-formfieldss{{ optionfield.field_id }}" class="form-select country_id">
+							<option value="">{{ text_select }} </option>
+							{% for country in countries %}
+								{% if country.country_id == optionfield.field_id %}
+								<option value="{{ country.country_id }}" selected="selected">{{ country.name }} </option>
+								{% else %}
+								<option value="{{ country.country_id }}">{{ country.name }} </option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+				</div>	
+				{% endif %}
+				{% if optionfield.type == 'zone' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">	
+					<select name="formfields[{{ optionfield.field_id }}]" id="input-formfieldss{{ optionfield.field_id }}" class="form-select zone_id">
+					</select>
+					</div>
+				</div>	
+				{% endif %}	
+					
+				{% if optionfield.type == 'address' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.placeholder }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control" />
+					</div>
+				</div>
+				{% endif %}	
+				{% if optionfield.type == 'postcode' %}
+				<div class="row mb-3{% if optionfield.required %} required {% endif %}">
+					<label class="col-sm-12  col-form-label" for="input-formfieldss{{ optionfield.field_id }}">
+						{% if optionfield.help_text %}
+							<span data-bs-toggle="tooltip" title="{{ optionfield.help_text }}">
+						{% endif %}
+						  {{ optionfield.field_name }}
+						{% if optionfield.help_text %}
+							<i class="fa fa-question-circle" aria-hidden="true"></i> </span>
+						{% endif %}
+					</label>
+					<div class="col-sm-12">
+						<input type="text" name="formfields[{{ optionfield.field_id }}]" value="" placeholder="{{ optionfield.name }}" id="input-formfieldss{{ optionfield.field_id }}" class="form-control" />
+					</div>
+				</div>
+				{% endif %}	
+			  
+				{% endfor %}
+				{% endif %}	
+				
+				{% if captchastatus==1 %}
+					{{ captcha }}
+					<div id="g-recaptchas" class="g-recaptchas" data-sitekey="{{ site_key }}"></div>
+					{% if error_captcha %}
+					    <div class="text-danger">{{ error_captcha }}</div>
+					{% endif %}
+				{% endif %}	
+					
+					<div class="row mb-3">	
+						<div class="col-sm-12">
+							<div class="buttons">
+								<div class="d-flex gap-2 justify-content-center">
+									<button rel1="{{ language }}"  type="button" id="button-formbuliders" data-loading-text="{{ text_loading }}" class="{% if submit_bgcolor %} btn btn-white btn-lg{% else %}btn btn-primary btn-lg {% endif %} button-formbuliders">{{ button_name }} </button>
+									{% if resetbutton==1 %}					
+										<input type="reset" id="button-reset-formbulider" value="{{ resetbutton_name }}" class="{% if reset_bgcolor %} btn btn-whites btn-lg{% else %}btn btn-primary btn-lg{% endif %}"/>
+									{% endif %}
+								</div>								
+							</div>								
+						</div>	
+					</div>						
+				</div>
+				<input type="hidden" name="productform_id" value="{{productform_id}}" rel="{{productform_id}}">
+				<input type="hidden" name="language" value="{{ language }}" rel1="{{ language }}">			
+			</form>
+			
+			{% if bottom_description %}
+			<div class="bottomdescrption">{{ bottom_description }} </div>	  
+			{% endif %}
+			
+		</div>
+	</div>
+</div>
+
+<link href="catalog/view/javascript/jquery/datetimepicker/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<script src="catalog/view/javascript/jquery/datetimepicker/moment.min.js" type="text/javascript"/></script>
+<script src="catalog/view/javascript/jquery/datetimepicker/daterangepicker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+// Date
+    var oc_datetimepicker = function() {
+        $(this).daterangepicker({
+			parentEl: '#CalModal',
+            singleDatePicker: true,
+            autoApply: true,
+            autoUpdateInput: false,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        }, function(start, end) {
+            $(this.element).val(start.format('YYYY-MM-DD'));
+        });
+    }
+
+    $(document).on('focus', '.tmddate', oc_datetimepicker);
+
+    // Time
+    var oc_datetimepicker = function() {
+        $(this).daterangepicker({
+			parentEl: '#CalModal2',
+            singleDatePicker: true,
+            datePicker: false,
+            autoApply: true,
+            autoUpdateInput: false,
+            timePicker: true,
+            timePicker24Hour: true,
+            locale: {
+                format: 'HH:mm'
+            }
+        }, function(start, end) {
+            $(this.element).val(start.format('HH:mm'));
+        }).on('show.daterangepicker', function(ev, picker) {
+            picker.container.find('.calendar-table').hide();
+        });
+    }
+
+    $(document).on('focus', '.tmdtime', oc_datetimepicker);
+	
+	$('.tmddatetimemain').click(function() {
+        $('.tmddatetime').focus(); // This will simulate a focus event and trigger the datetime picker
+    });
+	$('.tmddatemain').click(function() {
+        $('.tmddate').focus(); // This will simulate a focus event and trigger the datetime picker
+    });
+	$('.tmdtimemain').click(function() {
+        $('.tmdtime').focus(); // This will simulate a focus event and trigger the datetime picker
+    });
+	
+
+    // Date Time
+    var oc_datetimepicker = function() {
+        $(this).daterangepicker({
+			parentEl: '#CalModal1',
+            singleDatePicker: true,
+            autoApply: true,
+            autoUpdateInput: false,
+            timePicker: true,
+            timePicker24Hour: true,
+            locale: {
+                format: 'YYYY-MM-DD HH:mm'
+            }
+        }, function(start, end) {
+            $(this.element).val(start.format('YYYY-MM-DD HH:mm'));
+        });
+    }
+
+    $(document).on('focus', '.tmddatetime', oc_datetimepicker);
+
+</script>
+
+{% if(VERSION>='4.0.2.0') %}
+<script type="text/javascript"><!--
+
+$(document).ready(function() {
+    function getCurrencySymbol(text) {
+        return text.replace(/[0-9.,]/g, '').trim();
+    }
+    function stripCurrencySymbol(price) {
+        return price.replace(/[^\d.]/g, ''); 
+    }
+
+    var basePriceRel = $('#base_prices').attr('rel');
+    var basePriceText = $('#base_prices').text().trim();
+    var currencySymbol = getCurrencySymbol(basePriceText); 
+
+    $('input[type=radio], input[type=checkbox], select').click(function() {
+        var bprice = parseFloat(basePriceRel);  
+        var price = 0;
+
+        $.each($("input[type='radio']:checked, input[type='checkbox']:checked, select option:selected"), function() {
+            var rel = $(this).attr('rel');
+            if (rel && !isNaN(parseFloat(rel))) {
+                price += parseFloat(rel);  
+            }
+        });
+
+        var newPrice = bprice + price;
+
+        if (newPrice == 0) {
+            $('#base_prices').hide();
+        } else {
+            $('#base_prices').show();
+            $('#base_prices').html(currencySymbol + newPrice.toFixed(2)); 
+        }
+
+        lodprice(newPrice.toFixed(2));
+    });
+
+    function lodprice(newPrice) {
+        $.ajax({
+            url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/popupform.popupformloadprice',
+            type: 'post',
+            data: {price: newPrice},
+            dataType: 'json',
+            success: function(json) {
+                if (json.price) {
+                	var priceWithoutSymbol = stripCurrencySymbol(json.price); // Remove currency symbol
+                    $('#base_prices').html(json.price);  
+                    $('#price').val(priceWithoutSymbol);  
+                }
+            }
+        });
+    }
+});
+
+$('.button-formbuliders').on('click', function() {
+
+
+    var rel1 = $(this).attr('rel1'); 
+	
+	$.ajax({
+		 url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/popupform.addpoup&language_id=' + rel1 + '&productform_id={{ productform_id }}',
+		type: 'post',
+		data: $('#formbuilder input[type=\'text\'], #formbuilder input[type=\'password\'], #formbuilder input[type=\'hidden\'], #formbuilder input[type=\'radio\']:checked, #formbuilder input[type=\'checkbox\']:checked, #formbuilder select, #formbuilder textarea'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('.button-formbuliders').button('loading');
+        },
+		complete: function() {
+			$('.button-formbuliders').button('reset');
+		},
+		success: function(json) {
+           $('.alert, .text-danger').remove();
+            $('.row.mb-3').removeClass('has-error'); // Update: Ensure that no space between 'row' and 'mb-3'
+
+            if (json['error']) {
+                // Handle form field errors
+                if (json['error']['formfields']) {
+                    for (i in json['error']['formfields']) {
+                        var element = $('#input-formfieldss' + i.replace('_', '-'));
+
+                        if (element.parent().hasClass('input-group')) {
+                            element.parent().after('<div class="text-danger">' + json['error']['formfields'][i] + '</div>');
+                        } else {
+                            element.after('<div class="text-danger">' + json['error']['formfields'][i] + '</div>');
+                        }
+                    }
+                    $('.text-danger').parentsUntil('.row.mb-3').parent().addClass('has-error');
+                }
+
+                // Handle captcha error
+                if (json['error']['captcha']) {
+                    $('#g-recaptchas').after('<div class="text-danger">' + json['error']['captcha'] + '</div>');
+                }
+            }
+
+            if (json['success']) {
+                location = '{{ producturl }}';
+            }
+        }
+	});
+});
+</script>
+{% else %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+    function getCurrencySymbol(text) {
+        return text.replace(/[0-9.,]/g, '').trim();
+    }
+    function stripCurrencySymbol(price) {
+        return price.replace(/[^\d.]/g, ''); 
+    }
+
+    var basePriceRel = $('#base_prices').attr('rel');
+    var basePriceText = $('#base_prices').text().trim();
+    var currencySymbol = getCurrencySymbol(basePriceText); 
+
+    $('input[type=radio], input[type=checkbox], select').click(function() {
+        var bprice = parseFloat(basePriceRel);  
+        var price = 0;
+
+        $.each($("input[type='radio']:checked, input[type='checkbox']:checked, select option:selected"), function() {
+            var rel = $(this).attr('rel');
+            if (rel && !isNaN(parseFloat(rel))) {
+                price += parseFloat(rel);  
+            }
+        });
+
+        var newPrice = bprice + price;
+
+        if (newPrice == 0) {
+            $('#base_prices').hide();
+        } else {
+            $('#base_prices').show();
+            $('#base_prices').html(currencySymbol + newPrice.toFixed(2)); 
+        }
+
+        lodprice(newPrice.toFixed(2));
+    });
+
+    function lodprice(newPrice) {
+        $.ajax({
+            url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/popupform.popupformloadprice',
+            type: 'post',
+            data: {price: newPrice},
+            dataType: 'json',
+            success: function(json) {
+                if (json.price) {
+                	var priceWithoutSymbol = stripCurrencySymbol(json.price); // Remove currency symbol
+                    $('#base_price').html(json.price);  
+                    $('#price').val(priceWithoutSymbol);  
+                }
+            }
+        });
+    }
+});
+$('.button-formbuliders').on('click', function() {
+	
+    var rel1 = $(this).attr('rel1'); 
+ 
+	$.ajax({
+		url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/popupform|addpoup&language_id=' + rel1 + '&productform_id={{ productform_id }}',
+		type: 'post',
+		data: $('#formbuilder input[type=\'text\'], #formbuilder input[type=\'password\'], #formbuilder input[type=\'hidden\'], #formbuilder input[type=\'radio\']:checked, #formbuilder input[type=\'checkbox\']:checked, #formbuilder select, #formbuilder textarea'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('.button-formbuliders').button('loading');
+        },
+		complete: function() {
+			$('.button-formbuliders').button('reset');
+		},
+		success: function(json) {
+            $('.alert, .text-danger').remove();
+            $('.row.mb-3').removeClass('has-error'); // Update: Ensure that no space between 'row' and 'mb-3'
+
+            if (json['error']) {
+                // Handle form field errors
+                if (json['error']['formfields']) {
+                    for (i in json['error']['formfields']) {
+                        var element = $('#input-formfieldss' + i.replace('_', '-'));
+
+                        if (element.parent().hasClass('input-group')) {
+                            element.parent().after('<div class="text-danger">' + json['error']['formfields'][i] + '</div>');
+                        } else {
+                            element.after('<div class="text-danger">' + json['error']['formfields'][i] + '</div>');
+                        }
+                    }
+                    $('.text-danger').parentsUntil('.row.mb-3').parent().addClass('has-error');
+                }
+
+                // Handle captcha error
+                if (json['error']['captcha']) {
+                    $('#g-recaptchas').after('<div class="text-danger">' + json['error']['captcha'] + '</div>');
+                }
+            }
+
+            if (json['success']) {
+                location = '{{ producturl }}';
+            }
+        }
+	});
+});
+</script>
+{% endif %}
+<script type="text/javascript">
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			var language_code = '{{ language_code }}'; 
+	        
+			$.ajax({
+				url: 'index.php?route=tool/upload&language=' + language_code,
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						//$('.file_upload_image_pop').text(json['success']);
+						$('.msg_pop_up').after('<div class="alert alert-success alert-dismissible">' + json['success'] + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+						$(node).parent().find('input').attr('value', json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+
+$('.country_id').on('change', function() {
+	$.ajax({
+		url: 'index.php?route=localisation/country&language={{ language }}&country_id=' + this.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.country_id').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
+			
+			html = '<option value="">{{ text_select }} </option>';
+
+			if (json['zone'] && json['zone'] != '') {
+				for (i = 0; i < json['zone'].length; i++) {
+					html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+					if (json['zone'][i]['zone_id'] == '') {
+						html += ' selected="selected"';
+					}
+
+					html += '>' + json['zone'][i].name + '</option>';
+				}
+			} else {
+				html += '<option value="0" selected="selected">{{ text_none }} </option>';
+			}
+
+			$('.zone_id').html(html);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+$('select .country_id').trigger('change');
+//--></script>
+
+<link href="extension/tmdadvanceformbuilder/catalog/view/stylesheet/tmdcaptcha.css" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+<script type="text/javascript">
+  $(document).on('submit', 'form[data-oc-toggle=\'ajax\']', function (e) {
+    e.preventDefault();
+    var element = this;
+    var form = e.target;
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ site_key }}', {action: 'validate_captcha'})
+            .then(function(token) {
+                document.getElementById('g-recaptcha-response').value = token;
+            });
+    });
+  });
+</script>
+<style type="text/css">
+#button-formbuliders{
+	background-color:{{submit_bgcolor}} !important;
+	border-color:{{submit_bgcolor}} !important;
+	color: {{submit_txtcolor}} !important;
+}
+#button-reset-formbulider{
+	background-color:{{reset_bgcolor}}!important;
+	border-color:{{reset_bgcolor}}!important;
+	color: {{reset_txtcolor}} !important;
+}
+{{ customcss }} 
+#CalModal,#CalModal1,#CalModal2{
+	position:relative;
+}
+.daterangepicker {
+    min-width: 223px !important;
+    width: 285px !important;
+    overflow: scroll;
+    max-height: 300px;
+}
+.daterangepicker.show-calendar .drp-buttons {
+    display: flex !important;
+}
+#CalModal .daterangepicker.show-calendar .drp-buttons {
+    display: none !important;
+}
+.tmdtimemain{
+	width: 100%;
+}
+</style>

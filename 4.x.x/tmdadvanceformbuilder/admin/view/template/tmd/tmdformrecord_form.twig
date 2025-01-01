@@ -1,0 +1,121 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="float-end">
+				<a href="{{ pdfgenrate }}" data-bs-toggle="tooltip" title="{{ button_pdf }}" data-bs-toggle="tooltip" title="" class="btn btn-light "><i class="fa fa-file-pdf"></i> </a>
+				<a href="{{ cancel }}" data-bs-toggle="tooltip" title="{{ button_cancel }}"  data-bs-toggle="tooltip" title="" class="btn btn-light" data-bs-original-title="Back" aria-label="Back" aria-describedby="tooltip59864"><i class="fas fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			  <ol class="breadcrumb">
+		        {% for breadcrumb in breadcrumbs %}
+		          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		        {% endfor %}
+		      </ol>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<form action="" method="post" enctype="multipart/form-data" id="form-tmdformrecord" class="form-horizontal">
+		<div class="row mb-3">
+			<div class="col-sm-6">
+				<div class="card">
+				  <div class="card-header">
+					<i class="fa fa-file" aria-hidden="true"></i> {{ text_detail }}
+				  </div>
+				  <div class="card-body">
+					  <div class="table-responsive">
+						<table class="table">
+						  <tbody>
+							<tr>
+							  <td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-file"></i></span>&nbsp;  {{ title }}</a></td>
+							</tr>
+							<tr>
+							  <td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-sitemap"></i></span>&nbsp;  {{ sname }}</a></td>
+							</tr>
+							<tr>
+							  <td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-globe"></i></span>&nbsp;  {{ lname }}</a></td>
+							</tr>
+							<tr>
+							  <td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-calendar"></i></span>&nbsp; {{ date_added }}</a></td>
+							</tr>
+						  </tbody>
+						</table>
+					  </div>
+				  </div>		
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="card">
+				  <div class="card-header">
+					<i class="fa fa-user" aria-hidden="true"></i> {{ text_custdetail }}
+				  </div>
+					<div class="card-body">
+					  <div class="table-responsive">
+						<table class="table">
+						  <tbody>
+							<tr>
+								{% if customer_name %}
+								<td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-user"></i></span>&nbsp;  {{ customer_name }}</a></td>
+								{% else %}
+								<td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-user"></i></span>&nbsp;  Guest</a></td>
+								{% endif %}
+							</tr>
+							<tr>
+							  <td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-desktop"></i></span>&nbsp;  {{ ip }}</a></td>
+							</tr>
+							<tr>
+							  <td class="text-left"><a href="javascript:void(0);"><span class="btn btn-primary"><i class="fa fa-life-ring" aria-hidden="true"></i></span>&nbsp;  {{ user_agent }}...</a></td>
+							</tr>
+						  </tbody>
+						</table>
+					  </div>
+					</div>		
+				</div>		
+			</div>		
+		</div>		
+		
+		<div class="row fields">
+			<div class="col-sm-12">
+				<div class="card">
+				  <div class="card-header">
+					<i class="fa fa-info-circle" aria-hidden="true"></i> {{ text_fields }}
+				  </div>
+				  <div class="card-body">
+				  <div class="table-responsive">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<td class="text-left" style="width:25%;">{{ entry_fieldname }}</td>
+								<td class="text-left">{{ entry_fieldvalue }}</td>
+							</tr>
+						</thead>
+						{% for fieldinfo in field_infos %}
+						<tbody>
+							<tr>
+							  <td class="text-left"><label>{{ fieldinfo.label }}</label></td>
+							  <td class="text-left">{{ fieldinfo.value }}</td>
+							</tr>
+						</tbody>
+						{% endfor %}
+					</table>
+				  </div>
+				</div>		
+				</div>			
+			</div>			
+		</div>					
+		</form>
+	</div>	
+{{ footer }}
+</div>
+<style>
+.table td a span{
+	margin-right:5px;
+}
+.table td a{
+	color:#333;
+}
+.panel > .table-responsive > .table-bordered{
+	border:1px solid #dddddd;
+}
+</style>
+
