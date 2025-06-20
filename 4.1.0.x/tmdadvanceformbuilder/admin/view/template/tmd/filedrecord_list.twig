@@ -1,0 +1,144 @@
+<form id="form-report" method="post" data-oc-toggle="ajax" data-oc-load="{{ action }}" data-oc-target="#report">
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<td class="text-start">{{column_productname}}</td>
+
+					<!--Filed Heading-->
+					{% for heading in filedheading %}
+						<td class="text-start">						
+						{{ heading.label }}						
+						</td>
+					{% endfor %}
+					<!--Filed Heading-->
+
+					<td class="text-left">{{ column_total }}</td>
+					<td class="text-left">{{ column_status }}</td>
+					
+					<td class="text-start">{{ column_ip }}
+						</td>
+
+					<td class="text-start"><a href="{{ sort_date }}"{% if sort == 'date' %} class="{{ order|lower }}"{% endif %}>{{ column_date }}</a></td>
+
+					<td class="text-start">{{ column_action }}</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% if records %}
+					{% for report in records %}
+						<td class="text-start">{{ report.productname }}</td>
+						{% for values in report.filedvalue %}
+							<td class="text-start">						
+								{{ values.value }}						
+							</td>
+						{% endfor %}
+						
+						<td class="text-left">{{ report.total }}</td>
+						<td class="text-left">{{ report.status }}</td>
+
+						<td class="text-start">{{ report.ip }}</td>
+						<td class="text-start">{{ report.date_added }}</td>
+						<td class="text-start">
+						<span class="d-flex gap-1">
+						<a href="{{ report['view'] }}" data-bs-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+						<a data-bs-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger button-delete deletbtn{{ report['fs_id'] }}" rel="{{ report['fs_id'] }}" ><i class="fa fa-trash"></i></a>		
+						</span>
+						</td>
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td class="text-center" colspan="9">{{ text_no_results }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+			<input type="hidden" name="form_id" rel1="{{ form_id }}">
+	    	<input type="hidden" name="filter_title" rel="{{filter_title}}">
+	</div>
+	<div class="row">
+		<div class="col-sm-6 text-start">{{ pagination }}</div>
+		<div class="col-sm-6 text-end">{{ results }}</div>
+	</div>
+
+
+</form>
+
+{% if(VERSION>='4.0.2.0') %}
+<script type="text/javascript">
+$('.button-delete').on('click', function() {
+    var rel = $(this).attr("rel");  
+    
+    $.ajax({
+        url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/filedrecord.deleterecord&user_token={{ user_token }}&form_id={{ form_id }}&filter_title={{ filter_title }}',
+        type: 'post',
+        data: { fs_id: rel }, 
+        dataType: 'json',
+        beforeSend: function() {
+            $('.deletbtn' + rel).button('loading');
+        },
+        complete: function() {
+            $('.deletbtn' + rel).button('reset');
+        },
+        success: function(json) {
+            $('.alert, .text-danger').remove();  
+
+            if (json['error']) {
+                $('.breadcrumb').after('<div class="text-danger">' + json['error'] + '</div>');
+                $('.warning').fadeIn('slow');
+            }
+
+            if (json['success']) {
+              $('.breadcrumb').after('<div class="alert alert-success">' + json['success'] + '</div>');
+
+				// Set a timeout to reload the page after 3 seconds (3000 milliseconds)
+				setTimeout(function() {
+				    location.reload();
+				}, 2000);
+
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ', error);
+            alert('An error occurred while processing the request.');
+        }
+    });
+});
+</script>
+{% else %}
+<script type="text/javascript">
+$('.button-delete').on('click', function() {
+		var rel = $(this).attr("rel");
+		$.ajax({
+		url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/filedrecord|deleterecord&user_token={{ user_token }}&form_id={{ form_id }}&filter_title={{ filter_title }}',
+		 type: 'post',
+        data: { fs_id: rel },  
+        dataType: 'json',
+        beforeSend: function() {
+            $('.deletbtn' + rel).button('loading');
+        },
+        complete: function() {
+            $('.deletbtn' + rel).button('reset');
+        },
+        success: function(json) {
+            $('.alert, .text-danger').remove();
+
+            if (json['error']) {
+                $('.breadcrumb').after('<div class="text-danger">' + json['error'] + '</div>');
+                $('.warning').fadeIn('slow');
+            }
+
+            if (json['success']) {
+                location = '{{ recordurl }}';
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ', error);  // Log any AJAX errors
+            alert('An error occurred while processing the request.');
+        }
+	});
+});
+
+</script>
+{% endif%}

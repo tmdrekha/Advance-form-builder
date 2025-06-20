@@ -1,0 +1,240 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">  
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div id="filter-record" class="col-lg-3 col-md-12 order-lg-last d-none d-lg-block mb-3">
+        <div class="card">
+          <div class="card-header"><i class="fas fa-filter"></i> {{ text_filter }}</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="input-title" class="form-label">{{ entry_title }}</label>
+			  {% if(VERSION>='4.0.2.0') %}
+		              <input type="text" name="filter_title" value="" placeholder="{{ entry_title }}" id="input-title" data-oc-target="autocomplete-title" class="form-control" autocomplete="off">
+		              <ul id="autocomplete-title" class="dropdown-menu"></ul>
+		            {% else %}
+              <input type="text" name="filter_title" value="{{ form_title }}" placeholder="{{ entry_title }}" list="list-title" id="input-title" class="form-control" />
+              <datalist id="list-title"></datalist>
+			  {% endif%}
+              <input type="hidden" name="form_id" value="{{ form_id }}" />
+            </div>
+            <div class="mb-3">
+              <label for="input-customername" class="form-label">{{ entry_name }}</label> 
+			  {% if(VERSION>='4.0.2.0') %}
+		              <input type="text" name="filter_name" value="" placeholder="{{ entry_name }}" id="input-customername" data-oc-target="autocomplete-customername" class="form-control" autocomplete="off">
+		              <ul id="autocomplete-customername" class="dropdown-menu"></ul>
+		            {% else %}
+                <input type="text" name="filter_name" value="{{ customernames }}" placeholder="{{ entry_name }}" list="list-customername" id="input-customername" class="form-control" />
+              <datalist id="list-customername"></datalist>
+			  {% endif%}
+                <input type="hidden" name="customer_id" value="{{ customer_id }}" />
+            </div>
+            <div class="mb-3">
+              <label for="input-price" class="form-label">{{ entry_ip }}</label>
+               <input type="text" name="filter_ip" value="{{ filter_ip }}" placeholder="{{ entry_ip }}" id="input-filter_ip" class="form-control" />
+            </div>
+        
+            <div class="mb-3">
+              <label for="input-date" class="form-label">{{ entry_date }}</label>
+              <div class="input-group">
+                <input type="text" name="filter_date" value="{{ filter_date }}" placeholder="{{ entry_date }}" id="input-date" class="form-control date"/>
+                <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+              </div>
+            </div>
+
+            <div class="text-end">
+              <button type="button" style="margin-top:17%;" id="button-filter" class="btn btn-light"><i class="fas fa-filter"></i> {{ button_filter }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-12">
+        <div class="card">
+          <div class="card-header"><i class="fas fa-list"></i> {{ text_list }}</div>
+          <div id="record" class="card-body">{{ list }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% if(VERSION>='4.0.2.0') %}
+<script type="text/javascript"><!--
+$('#record').on('click', 'thead a, .pagination a', function (e) {
+    e.preventDefault();
+
+    $('#record').load(this.href);
+});
+
+$('#button-filter').on('click', function() {
+  url = '';
+  
+   var filter_title = $('input[name=\'form_id\']').val();
+
+    if (filter_title) {
+        url += '&filter_title=' + encodeURIComponent(filter_title);
+    }
+  
+  var filter_name = $('input[name=\'customer_id\']').val();
+
+  if (filter_name) {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_ip = $('#input-filter_ip').val();
+
+  if (filter_ip) {
+    url += '&filter_ip=' + encodeURIComponent(filter_ip);
+  }
+
+    var filter_date = $('#input-date').val();
+
+    if (filter_date) {
+        url += '&filter_date=' + encodeURIComponent(filter_date);
+    }
+
+      $('#record').load('index.php?route=extension/tmdadvanceformbuilder/tmd/record.list&user_token={{ user_token }}' + url);
+      
+
+});
+//--></script>
+ {% else %}
+<script type="text/javascript"><!--
+$('#record').on('click', 'thead a, .pagination a', function (e) {
+    e.preventDefault();
+
+    $('#record').load(this.href);
+});
+
+$('#button-filter').on('click', function() {
+  url = '';
+  
+   var filter_title = $('input[name=\'form_id\']').val();
+
+    if (filter_title) {
+        url += '&filter_title=' + encodeURIComponent(filter_title);
+    }
+  
+  var filter_name = $('input[name=\'customer_id\']').val();
+
+  if (filter_name) {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_ip = $('#input-filter_ip').val();
+
+  if (filter_ip) {
+    url += '&filter_ip=' + encodeURIComponent(filter_ip);
+  }
+
+    var filter_date = $('#input-date').val();
+
+    if (filter_date) {
+        url += '&filter_date=' + encodeURIComponent(filter_date);
+    }
+
+      $('#record').load('index.php?route=extension/tmdadvanceformbuilder/tmd/record|list&user_token={{ user_token }}' + url);
+      
+
+});
+//--></script>
+{% endif%}
+{% if(VERSION>='4.0.2.0') %}
+<script type="text/javascript">
+$('#input-title').autocomplete({
+    'source': function (request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/record.autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+            dataType: 'json',
+            success: function (json) {
+                response($.map(json, function (item) {
+                    return {
+                        label: item['title'],
+                        value: item['form_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function (item) {
+    $('input[name=\'filter_title\']').val(item['label']);
+    $('input[name=\'form_id\']').val(item['value']);
+    }
+});
+
+$('#input-customername').autocomplete({
+    'source': function (request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/record.autocompletecustomer&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+            dataType: 'json',
+            success: function (json) {
+                response($.map(json, function (item) {
+                    return {
+                        label: item['firstname'],
+                        value: item['customer_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function (item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+    $('input[name=\'customer_id\']').val(item['value']);
+    }
+});
+//--></script>
+{% else %}
+<script type="text/javascript">
+$('#input-title').autocomplete({
+    'source': function (request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/record|autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+            dataType: 'json',
+            success: function (json) {
+                response($.map(json, function (item) {
+                    return {
+                        label: item['title'],
+                        value: item['form_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function (item) {
+    $('input[name=\'filter_title\']').val(item['label']);
+    $('input[name=\'form_id\']').val(item['value']);
+    }
+});
+
+$('#input-customername').autocomplete({
+    'source': function (request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/tmdadvanceformbuilder/tmd/record|autocompletecustomer&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+            dataType: 'json',
+            success: function (json) {
+                response($.map(json, function (item) {
+                    return {
+                        label: item['firstname'],
+                        value: item['customer_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function (item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+    $('input[name=\'customer_id\']').val(item['value']);
+    }
+});
+//--></script>
+{% endif%}
+
+{{ footer }}
